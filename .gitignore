@@ -1,0 +1,28 @@
+# Variables d'environnement — ne jamais committer
+.env
+.env.txt
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Base de données locale
+data/bot.db
+data/*.db
+
+# Environnements virtuels
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
