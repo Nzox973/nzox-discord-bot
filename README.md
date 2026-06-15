@@ -8,7 +8,7 @@ Bot Discord complet pour le serveur **NzoxYt** avec IA, annonces automatiques, s
 
 | Module | Description |
 |---|---|
-| 🤖 **IA Anthropic** | Répond via Claude dans un salon dédié ou sur mention |
+| 🤖 **IA Groq** | Répond dans un salon dédié ou sur mention (LLM via API Groq) |
 | 👋 **Accueil** | Message de bienvenue/départ personnalisé |
 | 📺 **Annonces** | Notification automatique nouvelles vidéos YouTube et live Twitch |
 | ⭐ **Niveaux XP** | Gain d'XP par message, cooldown anti-farm, classement |
@@ -23,7 +23,7 @@ Bot Discord complet pour le serveur **NzoxYt** avec IA, annonces automatiques, s
 
 - Python 3.11+
 - Un compte Discord Developer
-- (Optionnel) Clés API YouTube, Twitch, Anthropic
+- (Optionnel) Clés API YouTube, Twitch, Groq
 
 ### 1. Cloner / télécharger le projet
 
@@ -92,13 +92,13 @@ python main.py
 - Clic droit sur un salon → **Copier l'identifiant**
 - Remplis chaque `*_CHANNEL_ID` dans `.env`
 
-### Clé API Anthropic (module IA)
+### Clé API Groq (module IA)
 
-1. Va sur [console.anthropic.com](https://console.anthropic.com)
-2. **API Keys** → **Create Key**
-3. Copie la clé → `ANTHROPIC_API_KEY`
+1. Va sur [console.groq.com](https://console.groq.com)
+2. **API Keys** → **Create API Key**
+3. Copie la clé → `GROQ_API_KEY`
 
-Le bot utilise le prompt caching pour réduire les coûts sur chaque échange.
+Groq offre des inférences ultra-rapides (LPU). Le module IA est optionnel — le bot fonctionne sans cette clé.
 
 ### YouTube Data API v3 (annonces)
 
@@ -205,7 +205,7 @@ discord_bot/
 ├── .env.example             # Modèle de configuration
 ├── cogs/
 │   ├── welcome.py           # Accueil des membres
-│   ├── ai_responses.py      # IA via Anthropic Claude
+│   ├── ai_responses.py      # IA via Groq (LLM API)
 │   ├── announcements.py     # YouTube & Twitch
 │   ├── levels.py            # Système XP/niveaux
 │   ├── reaction_roles.py    # Rôles par réaction
@@ -227,3 +227,23 @@ discord_bot/
 **Les annonces YouTube/Twitch ne fonctionnent pas** → Au **premier lancement**, le bot mémorise la dernière publication sans l'annoncer (évite le spam au démarrage). Les annonces commenceront à la prochaine nouvelle publication.
 
 **`discord.errors.Forbidden` dans les logs** → Le bot manque de permissions. Vérifie son rôle dans les paramètres du serveur.
+
+---
+
+## Ce que ce projet démontre
+
+- Architecture Python modulaire (pattern Cogs discord.py)
+- Intégration d'API tierces (Groq, YouTube Data API v3, Twitch API)
+- Persistance de données avec SQLite via aiosqlite (async)
+- Gestion des secrets via variables d'environnement (python-dotenv)
+- Programmation asynchrone (asyncio, discord.py events)
+- Système de permissions et modération automatique
+
+---
+
+## Sécurité — secrets
+
+- **Aucun token ou clé API** n'est inclus dans le code source
+- Toutes les valeurs sensibles passent par un fichier `.env` (exclu du dépôt)
+- Le fichier `.env.example` fournit un modèle sans valeurs réelles
+- Le fichier `data/bot.db` est exclu du dépôt (`.gitignore`)
